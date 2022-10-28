@@ -181,3 +181,70 @@ I configured the SELinux policioes using the following commands:
     sudo setsebool -P httpd_can_network_connect=1
     
 ``` 
+#### DATABASE SERVER CONFIGURATION
+I updated the **db-server** repository and installed mysql-server.
+
+```bash
+    sudo yum update
+    sudo yum install mysql-server    
+``` 
+
+I restarted the service and enabled it to run even after reboot using the command: 
+```bash
+    sudo systemctl restart mysqld
+    sudo systemctl enable mysqld
+``` 
+![image 16](images/img16.png)
+
+#### CONFIGURING THE DATABASE TO WORDPRESS CONNECTION AND WORDPRESS TO REMOTE DATABASE CONNECTON
+
+![image 27](images/img27.png)
+
+I configured the database to work with wordpress using the following commands:
+```bash
+    sudo mysql
+    
+``` 
+```mysql
+    CREATE DATABASE wordpress;
+    CREATE USER `myuser`@`<Web-Server-Private-IP-Address>` IDENTIFIED BY 'mypass';
+    GRANT ALL ON wordpress.* TO 'myuser'@'<Web-Server-Private-IP-Address>';
+    FLUSH PRIVILEGES;
+    SHOW DATABASES;
+    exit
+```
+![image 17](images/img17.png)
+
+I opened port 3306 on **db-server** and allowed single entry through the port for the **webserver** by specifying it's provate IP address with the inbound rule configuration specified as /32.
+
+![image 18](images/img18.png)
+
+I installed MySQL on my webserver and tested connection from **webserver** to the **db-server** by using the following commands:
+```bash
+    sudo yum install mysql
+    sudo mysql -u admin -p -h <DB-Server-Private-IP-address>
+``` 
+![image 19](images/img19.png)
+
+![image 20](images/img20.png)
+
+I accessed the wp-config.php file and updated the database configuration.
+
+```bash
+    sudo vi wp-config.php
+``` 
+![image 22](images/img22.png)
+
+![image 21](images/img21.png)
+
+I enabled TCP port 80 for **webserver** and successfully accessed the link to the wordpress vial my browser.
+
+![image 23](images/img23.png)
+
+My wordpress successfully connected to MySQL database.
+
+![image 24](images/img24.png)
+
+![image 25](images/img25.png)
+
+
