@@ -16,6 +16,7 @@ I created an EC2 instance using the RedHat Operating System and named it **webse
 
 
 ![Image 2](images/img2.png)
+
 I created a single partition on each of the 3 disk volumes using
 ```bash
     sudo gdisk /dev/xvdf
